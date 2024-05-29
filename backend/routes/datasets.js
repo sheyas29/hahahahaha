@@ -31,11 +31,13 @@ const calculateStats = (data) => {
   const min = Math.min(...values);
   const max = Math.max(...values);
   const mean = values.reduce((a, b) => a + b, 0) / values.length;
-  return { min, max, mean };
+  const variance = values.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / values.length;
+  const stdev = Math.sqrt(variance);
+  return { min, max, mean: mean.toFixed(2), variance: variance.toFixed(2), stdev: stdev.toFixed(2) };
 };
 
 router.post('/chart-data', async (req, res) => {
-  const { datasets, xAxis, yAxisAttributes } = req.body;
+  const { datasets, xAxis, yAxis } = req.body;
 
   try {
     const chartData = {};
@@ -43,7 +45,7 @@ router.post('/chart-data', async (req, res) => {
     let combinedXValues = [];
     for (const dataset of datasets) {
       const filePath = path.join(uploadDir, dataset);
-      const data = await getDataForChart(filePath, xAxis, yAxisAttributes[dataset]);
+      const data = await getDataForChart(filePath, xAxis, yAxis);
       chartData[dataset] = data;
       statsData[dataset] = calculateStats(data);
       combinedXValues = combinedXValues.concat(data.map(item => item.x));

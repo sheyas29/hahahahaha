@@ -8,7 +8,7 @@ import './ChartComponent.css';
 
 Chart.register(...registerables);
 
-function ChartComponent({ datasets, xAxis, yAxisAttributes, referenceDataset, datasetColors }) {
+function ChartComponent({ datasets, xAxis, yAxis, referenceDataset, datasetColors }) {
   const [chartData, setChartData] = useState({});
   const [combinedXValues, setCombinedXValues] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -16,14 +16,14 @@ function ChartComponent({ datasets, xAxis, yAxisAttributes, referenceDataset, da
 
   useEffect(() => {
     const fetchData = async () => {
-      if (datasets && xAxis && yAxisAttributes) {
+      if (datasets.length > 0 && xAxis && yAxis) {
         setLoading(true);
         setError(null);
         try {
           const response = await axios.post('http://localhost:5000/datasets/chart-data', {
             datasets,
             xAxis,
-            yAxisAttributes
+            yAxis
           });
           setChartData(response.data.chartData);
           setCombinedXValues(response.data.combinedXValues);
@@ -35,7 +35,7 @@ function ChartComponent({ datasets, xAxis, yAxisAttributes, referenceDataset, da
       }
     };
     fetchData();
-  }, [datasets, xAxis, yAxisAttributes]);
+  }, [datasets, xAxis, yAxis]);
 
   const data = {
     labels: combinedXValues,

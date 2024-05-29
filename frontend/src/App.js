@@ -13,7 +13,6 @@ function App() {
   const [yAxis, setYAxis] = useState('');
   const [referenceDataset, setReferenceDataset] = useState('');
   const [datasetColors, setDatasetColors] = useState({});
-  const [selectedAttributes, setSelectedAttributes] = useState({});
 
   const addDataset = (dataset) => {
     setDatasets([...datasets, dataset]);
@@ -30,13 +29,6 @@ function App() {
     });
   };
 
-  const handleAttributeChange = (fileName, attribute) => {
-    setSelectedAttributes({
-      ...selectedAttributes,
-      [fileName]: attribute
-    });
-  };
-
   return (
     <div className="App">
       <Header />
@@ -46,24 +38,29 @@ function App() {
           datasets={datasets} 
           removeDataset={removeDataset} 
           setDatasetColor={setDatasetColor} 
-          handleAttributeChange={handleAttributeChange}
-          selectedAttributes={selectedAttributes}
+          yAxis={yAxis}
         />
         {datasets.length > 0 && (
           <>
-            <AxisSelection setXAxis={setXAxis} setYAxis={setYAxis} datasets={datasets} />
-            <label>Select Reference Dataset:</label>
-            <select onChange={(e) => setReferenceDataset(e.target.value)} defaultValue="">
-              <option value="" disabled>Select Reference Dataset</option>
-              {datasets.map(dataset => (
-                <option key={dataset} value={dataset}>{dataset}</option>
-              ))}
-            </select>
-            {xAxis && Object.keys(selectedAttributes).length > 0 && referenceDataset && (
+            <div className="flex-container">
+              <div className="flex-item">
+                <AxisSelection setXAxis={setXAxis} setYAxis={setYAxis} datasets={datasets} />
+              </div>
+              <div className="flex-item">
+                <label className="label" htmlFor="reference-dataset">Select Reference Dataset:</label>
+                <select id="reference-dataset" onChange={(e) => setReferenceDataset(e.target.value)} defaultValue="">
+                  <option value="" disabled>Select Reference Dataset</option>
+                  {datasets.map(dataset => (
+                    <option key={dataset} value={dataset}>{dataset}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            {xAxis && yAxis && referenceDataset && (
               <ChartComponent 
                 datasets={datasets} 
                 xAxis={xAxis} 
-                yAxisAttributes={selectedAttributes} 
+                yAxis={yAxis} 
                 referenceDataset={referenceDataset} 
                 datasetColors={datasetColors} 
               />

@@ -1,7 +1,7 @@
 import React from 'react';
 import './StatsCard.css';
 
-function StatsCard({ min, max, mean }) {
+function StatsCard({ min, max, mean, variance, stdev }) {
   return (
     <div className="stats-card">
       <div className="stats-item">
@@ -12,6 +12,12 @@ function StatsCard({ min, max, mean }) {
       </div>
       <div className="stats-item">
         <strong>Mean:</strong> {mean}
+      </div>
+      <div className="stats-item">
+        <strong>Variance:</strong> {variance}
+      </div>
+      <div className="stats-item">
+        <strong>Std Dev:</strong> {stdev}
       </div>
     </div>
   );

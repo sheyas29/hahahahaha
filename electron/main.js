@@ -15,49 +15,52 @@ function createWindow() {
     },
   });
 
-  const startUrl = 'http://localhost:3000';
+  const startUrl = process.env.ELECTRON_START_URL || `file://${path.join(__dirname, '../frontend/build/index.html')}`;
 
-  const opts = {
-    resources: [startUrl],
-    delay: 1000, // Initial delay in ms before checking the resources
-    timeout: 30000, // Timeout in ms
-    interval: 1000, // Interval to check the resources
-  };
+  if (process.env.ELECTRON_START_URL) {
+    const opts = {
+      resources: [startUrl],
+      delay: 1000, // Initial delay in ms before checking the resources
+      timeout: 30000, // Timeout in ms
+      interval: 1000, // Interval to check the resources
+    };
 
-  waitOn(opts, (err) => {
-    if (err) {
-      console.error('Failed to load URL:', err);
-      app.quit();
-    } else {
-      mainWindow.loadURL(startUrl);
+    waitOn(opts, (err) => {
+      if (err) {
+        console.error('Failed to load URL:', err);
+        app.quit();
+      } else {
+        mainWindow.loadURL(startUrl);
+        mainWindow.webContents.openDevTools(); // Open DevTools in development
+      }
+    });
+  } else {
+    mainWindow.loadURL(startUrl);
+  }
 
-      // Set Content Security Policy dynamically
-      mainWindow.webContents.on('did-finish-load', () => {
-        const csp = `
-          default-src 'self';
-          script-src 'self' 'unsafe-inline'; 
-          style-src 'self' 'unsafe-inline'; 
-          font-src 'self';
-          img-src 'self' data:;
-          connect-src 'self' http://localhost:5000;
-          connect-src 'self' http://localhost:3000;
-        `;
-        mainWindow.webContents.executeJavaScript(`
-          (() => {
-            const meta = document.createElement('meta');
-            meta.httpEquiv = 'Content-Security-Policy';
-            meta.content = "${csp.replace(/\n/g, ' ')}";
-            document.getElementsByTagName('head')[0].appendChild(meta);
-          })();
-        `).then(() => {
-          console.log('CSP meta tag added successfully.');
-        }).catch((error) => {
-          console.error('Failed to add CSP meta tag:', error);
-        });
-      });
-
-      mainWindow.webContents.openDevTools(); // Open DevTools in all cases
-    }
+  // Set Content Security Policy dynamically
+  mainWindow.webContents.on('did-finish-load', () => {
+    const csp = `
+      default-src 'self';
+      script-src 'self' 'unsafe-inline'; 
+      style-src 'self' 'unsafe-inline'; 
+      font-src 'self';
+      img-src 'self' data:;
+      connect-src 'self' http://localhost:5000;
+      connect-src 'self' http://localhost:3000;
+    `;
+    mainWindow.webContents.executeJavaScript(`
+      (() => {
+        const meta = document.createElement('meta');
+        meta.httpEquiv = 'Content-Security-Policy';
+        meta.content = "${csp.replace(/\n/g, ' ')}";
+        document.getElementsByTagName('head')[0].appendChild(meta);
+      })();
+    `).then(() => {
+      console.log('CSP meta tag added successfully.');
+    }).catch((error) => {
+      console.error('Failed to add CSP meta tag:', error);
+    });
   });
 }
 

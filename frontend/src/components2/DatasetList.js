@@ -3,35 +3,18 @@ import axios from 'axios';
 import Popup from './Popup';
 import StatsCard from './StatsCard';
 
-function DatasetList({ datasets, removeDataset, setDatasetColor, handleAttributeChange, selectedAttributes }) {
+function DatasetList({ datasets, removeDataset, setDatasetColor, yAxis }) {
   const [popupDataset, setPopupDataset] = useState(null);
   const [statsData, setStatsData] = useState({});
-  const [attributes, setAttributes] = useState({});
-
-  useEffect(() => {
-    const fetchAttributes = async () => {
-      const attributesObj = {};
-      for (const dataset of datasets) {
-        try {
-          const response = await axios.get(`http://localhost:5000/datasets/attributes/${dataset}`);
-          attributesObj[dataset] = response.data;
-        } catch (error) {
-          console.error(`Error fetching attributes for ${dataset}:`, error);
-        }
-      }
-      setAttributes(attributesObj);
-    };
-    fetchAttributes();
-  }, [datasets]);
 
   useEffect(() => {
     const fetchStats = async () => {
-      if (Object.keys(selectedAttributes).length > 0) {
+      if (datasets.length > 0 && yAxis) {
         try {
           const response = await axios.post('http://localhost:5000/datasets/chart-data', {
             datasets,
-            xAxis: 'someXAxis', // Update with the actual xAxis
-            yAxisAttributes: selectedAttributes
+            xAxis: 'someXAxis', // Placeholder for xAxis, not used here
+            yAxis
           });
           setStatsData(response.data.statsData);
         } catch (error) {
@@ -40,7 +23,7 @@ function DatasetList({ datasets, removeDataset, setDatasetColor, handleAttribute
       }
     };
     fetchStats();
-  }, [datasets, selectedAttributes]);
+  }, [datasets, yAxis]);
 
   const handleRemove = async (fileName) => {
     await axios.delete(`http://localhost:5000/datasets/delete/${fileName}`);
@@ -72,22 +55,13 @@ function DatasetList({ datasets, removeDataset, setDatasetColor, handleAttribute
             />
             <button onClick={() => handleOpenPopup(dataset)}>View Data</button>
             <button onClick={() => handleRemove(dataset)}>Remove</button>
-            {attributes[dataset] && (
-              <select
-                onChange={(e) => handleAttributeChange(dataset, e.target.value)}
-                value={selectedAttributes[dataset] || ""}
-              >
-                <option value="" disabled>Select Attribute</option>
-                {attributes[dataset].map(attr => (
-                  <option key={attr} value={attr}>{attr}</option>
-                ))}
-              </select>
-            )}
             {statsData[dataset] && (
               <StatsCard 
                 min={statsData[dataset].min}
                 max={statsData[dataset].max}
                 mean={statsData[dataset].mean}
+                variance={statsData[dataset].variance}
+                stdev={statsData[dataset].stdev}
               />
             )}
           </li>

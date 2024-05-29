@@ -1,256 +1,163 @@
-/* General Styles */
+/* General App Styles */
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f5f2f2;
-  color: #333;
+  background-color: #f6f6e9;
+  color: #13334c;
 }
 
 .App {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #FFB0B0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-}
-
-header, footer {
-  text-align: center;
-  padding: 20px 0;
-  background-color: #F06292;
-  color: white;
-  border-radius: 8px;
-}
-
-header h1, footer p {
-  margin: 0;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-main {
-  padding: 20px;
-  background-color: #f6f4f4;
-  border-radius: 8px;
-}
-
-/* Form Elements */
-label {
-  display: block;
-  margin-top: 20px;
-  font-weight: bold;
-  color: #E57373;
-}
-
-select, input[type="file"] {
-  margin-top: 10px;
-  padding: 10px;
-  font-size: 16px;
-  width: fit-content;
-  box-sizing: border-box;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #FFD1D1;
-}
-
-button {
-  background-color: #E57373;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  padding: 10px 20px;
-  font-size: 14px;
-  border-radius: 4px;
-  margin: 5px;
-  width: auto;
-}
-
-button:hover {
-  background-color: #F06292;
-}
-
-/* List Styles */
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-ul li {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  font-size: calc(10px + 2vmin);
-  padding: 10px 0;
-  border-bottom: 1px solid #EEE;
+  min-height: 100vh;
 }
 
-ul li span {
+/* Header Styles */
+header {
+  background-color: #13334c;
+  color: #f6f6e9;
+  padding: 20px;
+  text-align: center;
+  font-size: 24px;
+}
+
+/* Footer Styles */
+footer {
+  
+  background-image: linear-gradient(#0c4083, #093856);
+  color: #f6f6e9;
+  padding: 10px;
+  text-align: center;
+  margin-top: auto;
+}
+
+/* Main Content Styles */
+main {
   flex-grow: 1;
-  padding-right: 10px;
-  color: #555;
+  padding: 20px;
 }
 
-ul li button {
-  background: #FF8A80;
-  color: white;
+/* Dataset Upload Styles */
+.dropzone {
+  border: 2px dashed #005792;
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+  color: #005792;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.dropzone:hover {
+  background-color: #fd5f00;
+  color: #f6f6e9;
+}
+
+/* Dataset List Styles */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background-color: #13334c;
+  color: #f6f6e9;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+
+li span {
+  flex-grow: 1;
+}
+
+li input[type="color"] {
+  margin-right: 10px;
+}
+
+li button {
+  background-color: #e48951;
+  color: #f6f6e9;
   border: none;
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 4px;
-  margin: 5px;
-  font-size: 12px;
-  width: auto;
 }
 
-ul li button:hover {
-  background: #E57373;
+li button:hover {
+  background-color: #215b88;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-/* Keyframes */
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: scale(0.0);
-  }
-  50% {
-    transform: scale(1.0);
-  }
-}
-
-/* Error and Loading Styles */
-.error {
-  color: red;
-  background-color: #FF8A80;
-  padding: 10px;
-  border: 1px solid red;
-  border-radius: 4px;
-  margin-top: 10px;
-}
-
-.loading {
-  font-style: italic;
-  color: #E57373;
-}
-
-/* Spinner Styles */
-.spinner {
-  width: 40px;
-  height: 40px;
-  position: relative;
-  margin: 0 auto;
-}
-
-.double-bounce1, .double-bounce2 {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: #f0e8e8;
-  opacity: 0.6;
-  position: absolute;
-  top: 0;
-  left: 0;
-  animation: bounce 2.0s infinite ease-in-out;
-}
-
-.double-bounce2 {
-  animation-delay: -1.0s;
-}
-
-/* Modal Styles */
-.modal {
+/* Axis Selection Styles */
+label {
   display: block;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 600px;
-  border-radius: 8px;
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
+  margin: 10px 0 5px;
   font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
+select {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #13334c;
+  border-radius: 4px;
+  margin-bottom: 20px;
 }
 
 /* Chart Container Styles */
 .chart-container {
-  max-height: 600px; /* Adjust this height as needed */
-  overflow-y: auto;
+  background-color: #f6f6e9;
   padding: 20px;
-  border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: #f1ebeb;
+  box-shadow: fd5f00;
 }
 
-/* Responsive Styles */
-@media (max-width: 600px) {
-  .App {
-    padding: 10px;
-  }
-
-  select, input[type="file"] {
-    font-size: 14px;
-  }
-
-  ul li {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  ul li button {
-    margin-top: 10px;
-  }
-
-  .modal-content {
-    width: 90%;
-  }
+/* Stats Card Styles */
+.stats-card {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #005792;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
 }
+
+.stats-item {
+  min-width: 100px;
+  margin-right: 10px;
+  padding: 10px;
+  background-color: #fd5f00;
+  color: white;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stats-item:last-child {
+  margin-right: 0;
+}
+
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f6f6e9;
+}
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.flex-item {
+  margin: 0 10px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+}
+
