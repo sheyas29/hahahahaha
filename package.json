@@ -16,6 +16,7 @@
   "description": "",
   "devDependencies": {
     "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
     "electron": "^30.0.8",
     "electron-builder": "^24.13.3"
   },

@@ -13,6 +13,10 @@ function App() {
   const [yAxis, setYAxis] = useState('');
   const [referenceDataset, setReferenceDataset] = useState('');
   const [datasetColors, setDatasetColors] = useState({});
+  const [xMin, setXMin] = useState(null);
+  const [xMax, setXMax] = useState(null);
+  const [yMin, setYMin] = useState(null);
+  const [yMax, setYMax] = useState(null);
 
   const addDataset = (dataset) => {
     setDatasets([...datasets, dataset]);
@@ -27,6 +31,13 @@ function App() {
       ...datasetColors,
       [fileName]: color
     });
+  };
+
+  const resetScales = () => {
+    setXMin(null);
+    setXMax(null);
+    setYMin(null);
+    setYMax(null);
   };
 
   return (
@@ -56,6 +67,27 @@ function App() {
                 </select>
               </div>
             </div>
+            <div className="flex-container">
+              <div className="flex-item">
+                <label className="label" htmlFor="x-min">X Axis Min:</label>
+                <input type="number" id="x-min" value={xMin || ''} onChange={(e) => setXMin(e.target.value)} />
+              </div>
+              <div className="flex-item">
+                <label className="label" htmlFor="x-max">X Axis Max:</label>
+                <input type="number" id="x-max" value={xMax || ''} onChange={(e) => setXMax(e.target.value)} />
+              </div>
+              <div className="flex-item">
+                <label className="label" htmlFor="y-min">Y Axis Min:</label>
+                <input type="number" id="y-min" value={yMin || ''} onChange={(e) => setYMin(e.target.value)} />
+              </div>
+              <div className="flex-item">
+                <label className="label" htmlFor="y-max">Y Axis Max:</label>
+                <input type="number" id="y-max" value={yMax || ''} onChange={(e) => setYMax(e.target.value)} />
+              </div>
+              <div className="flex-item">
+                <button onClick={resetScales}>Reset Scales</button>
+              </div>
+            </div>
             {xAxis && yAxis && referenceDataset && (
               <ChartComponent 
                 datasets={datasets} 
@@ -63,6 +95,10 @@ function App() {
                 yAxis={yAxis} 
                 referenceDataset={referenceDataset} 
                 datasetColors={datasetColors} 
+                xMin={xMin}
+                xMax={xMax}
+                yMin={yMin}
+                yMax={yMax}
               />
             )}
           </>
@@ -71,6 +107,7 @@ function App() {
       <Footer />
     </div>
   );
+  
 }
 
 export default App;

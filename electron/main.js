@@ -38,7 +38,7 @@ function createWindow() {
     mainWindow.loadURL(startUrl);
   }
 
-  // Set Content Security Policy dynamically
+  // Set Content-Security-Policy dynamically
   mainWindow.webContents.on('did-finish-load', () => {
     const csp = `
       default-src 'self';
