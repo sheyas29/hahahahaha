@@ -39,6 +39,20 @@ function ChartComponent({ datasets, xAxis, yAxis, referenceDataset, datasetColor
     fetchData();
   }, [datasets, xAxis, yAxis]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (chartRef.current && chartRef.current.chartInstance) {
+        chartRef.current.chartInstance.resize();
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const data = {
     labels: combinedXValues,
     datasets: datasets.map(dataset => ({
@@ -55,6 +69,7 @@ function ChartComponent({ datasets, xAxis, yAxis, referenceDataset, datasetColor
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       x: {
         type: 'linear',
@@ -76,13 +91,13 @@ function ChartComponent({ datasets, xAxis, yAxis, referenceDataset, datasetColor
         },
         zoom: {
           wheel: {
-            enabled: true, // Enable zooming with the mouse wheel
+            enabled: true,
           },
           pinch: {
-            enabled: true, // Enable zooming with pinch gestures
+            enabled: true,
           },
           drag: {
-            enabled: false, // Disable zooming with drag gestures
+            enabled: false,
           }
         },
       },
