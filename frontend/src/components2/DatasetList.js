@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Popup from './Popup';
 import StatsCard from './StatsCard';
@@ -6,6 +6,7 @@ import StatsCard from './StatsCard';
 function DatasetList({ datasets, removeDataset, setDatasetColor, yAxis }) {
   const [popupDataset, setPopupDataset] = useState(null);
   const [statsData, setStatsData] = useState({});
+  const popupRef = useRef(null);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -24,6 +25,24 @@ function DatasetList({ datasets, removeDataset, setDatasetColor, yAxis }) {
     };
     fetchStats();
   }, [datasets, yAxis]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setPopupDataset(null);
+      }
+    };
+
+    if (popupDataset) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [popupDataset]);
 
   const handleRemove = async (fileName) => {
     await axios.delete(`http://localhost:5000/datasets/delete/${fileName}`);
@@ -68,7 +87,7 @@ function DatasetList({ datasets, removeDataset, setDatasetColor, yAxis }) {
         ))}
       </ul>
       {popupDataset && (
-        <Popup dataset={popupDataset} onClose={handleClosePopup} />
+        <Popup dataset={popupDataset} onClose={handleClosePopup} popupRef={popupRef} />
       )}
     </>
   );
